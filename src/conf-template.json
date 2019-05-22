@@ -3,7 +3,6 @@
     "pdl": "Your PDL Num",
     "login": "Enedi login",
     "password": "Enedis Password"
-    ;
   },
   "warp10": {
     "w10URL": "https://warp.senx.io/api/v0",
