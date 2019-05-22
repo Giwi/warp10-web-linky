@@ -1,0 +1,17 @@
+{
+  "name": "linkpi",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "body-parser": "^1.19.0",
+    "dayjs": "^1.8.14",
+    "express": "^4.17.0",
+    "express-handlebars": "^3.1.0",
+    "ora": "^3.4.0"
+  }
+}

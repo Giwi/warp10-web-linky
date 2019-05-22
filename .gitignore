@@ -1,0 +1,4 @@
+node_modules
+.idea
+*-error.log
+conf.json

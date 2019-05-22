@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <title>Warp 10 | Enedis</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet"
+        href="https://unpkg.com/pc-bootstrap4-datetimepicker@4.17.50/build/css/bootstrap-datetimepicker.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <script src="https://unpkg.com/jquery@3.3.1/dist/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+          integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+          crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+          integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+          crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/moment@2.24.0/moment.js"></script>
+  <script
+    src="https://unpkg.com/pc-bootstrap4-datetimepicker@4.17.50/build/js/bootstrap-datetimepicker.min.js"></script>
+  <script src="https://unpkg.com/@senx/warpview@1.0.50/dist/warpview.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <style>
+    body {
+      padding-top: 5rem;
+    }
+
+    .starter-template {
+      padding: 3rem 1.5rem;
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+  <a class="navbar-brand {{#if (eq 'home' current) }}active{{/if}}" href="/">Warp 10 | Enedis</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+          aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item {{#if (eq 'overview' current) }}active{{/if}}">
+        <a class="nav-link" href="/overview"><span class="fa fa-th-large"></span> Overview</a>
+      </li>
+      <li class="nav-item {{#if (eq 'monotonic' current) }}active{{/if}}">
+        <a class="nav-link" href="/monotonic"><span class="fa fa-line-chart"></span> Monotonic</a>
+      </li>
+      <li class="nav-item {{#if (eq 'spectrum' current) }}active{{/if}}">
+        <a class="nav-link" href="/spectrum"><span class="fa fa-map"></span> Spectrum</a>
+      </li>
+      <li class="nav-item {{#if (eq 'history' current) }}active{{/if}}">
+        <a class="nav-link" href="/history"><span class="fa fa-calendar"></span> Load History</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<main role="main" class="container">
+  <div class="starter-template">
+    {{{body}}}
+  </div>
+</main><!-- /.container -->
+
+</body>
+</html>

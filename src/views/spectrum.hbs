@@ -1,0 +1,93 @@
+<div class="card">
+  <div class="card-body">
+    <h2>Mean consumption spectrum</h2>
+    <div id="container"></div>
+  </div>
+</div>
+<script>
+  function formatAxis(labels) {
+    const formatedLabels = [];
+    console.log('labels', labels.length);
+    (labels || []).forEach(timestamp => {
+      const ts = Math.floor(parseInt(timestamp, 10) / 1000);
+      formatedLabels.push(moment(ts).add(-1, 'day').utc(true).format('DD/MM/YY'));
+    });
+    return formatedLabels;
+  }
+
+  function buildLabels() {
+    console.log('x');
+    const r = [];
+    for (let i = 0; i < 48; i++) {
+      const j = i / 2;
+      if (j - Math.floor(j) === 0) {
+        if (j < 10) {
+          r.push('0' + j + ':00');
+        } else {
+          r.push(j + ':00');
+        }
+      } else {
+      //  r.push('');
+        if (j < 10) {
+          r.push('0' + Math.floor(j) + ':30');
+        } else {
+          r.push(Math.floor(j) + ':30');
+        }
+      }
+    }
+    return r;
+  }
+
+  $(document).ready(() => {
+    var ws = `NOW ->TSELEMENTS [ 0 2 ] SUBLIST TSELEMENTS-> 'end' STORE
+  $end 30 d - 'start' STORE
+  [] 'labels' STORE
+  [] 'data' STORE
+  [ '{{rt}}' 'enedis.linky' { 'pdl' '{{pdl}}' } $end ISO8601 $start ISO8601 ] FETCH
+  [ SWAP bucketizer.mean $end 30 m 0 ] BUCKETIZE
+  [ NaN NaN NaN 0 ] FILLVALUE
+  'Europe/Paris' @senx/cal/byday 'splitted' STORE
+  $splitted 1 d 'd' TIMEMODULO FLATTEN
+  [ SWAP [ '.day' ]  reducer.mean.exclude-nulls ] REDUCE
+  $start TIMESHIFT 'gtsList' STORE
+  [] 'days' STORE
+  $gtsList <%
+    'gts' STORE
+    $days $gts LABELS '.day' GET TOLONG + 'days' STORE
+  %> FOREACH
+  $days LSORT <%
+    'd' STORE
+    [ $gtsList [] { '.day' '=' $d TOSTRING + } filter.bylabels ] FILTER
+    0 GET 'gts' STORE
+    $gts TICKLIST 0 GET 1 d - $d d  + 'day' STORE
+    $labels $day + 'labels' STORE
+    $data $gts VALUES + 'data' STORE
+  %> FOREACH
+  { 'labels'  $labels 'data' $data  }`;
+    $.post('{{w10URL}}/exec', ws, res => {
+      var r = JSON.parse(res);
+
+      var axisTemplate = {
+        showgrid: false,
+        zeroline: false,
+        linecolor: 'black',
+      };
+      var layout = {
+        xaxis: axisTemplate,
+        yaxis: axisTemplate,
+        showlegend: false,
+      };
+
+      var data = [
+        {
+          z: r[0].data,
+          y: formatAxis(r[0].labels),
+          x: buildLabels(),
+          type: 'heatmap'
+        }
+      ];
+      Plotly.newPlot('container', data, layout);
+    });
+
+  });
+</script>

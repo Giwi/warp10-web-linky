@@ -1,0 +1,101 @@
+<div class="card-deck">
+  <div class="card shadow-sm">
+    <div class="card-body" style="height: 400px">
+      <warp-view-tile url="{{w10URL}}/exec" responsive="true" unit="kW"
+                      show-legend="true" chart-title="Last 24 hour consumption">
+        NOW ->TSELEMENTS [ 0 2 ] SUBLIST TSELEMENTS-> 'now' STORE
+        [ '{{rt}}' 'enedis.linky' { 'pdl' '{{pdl}}' } $now 1 d - ISO8601 $now ISO8601 ] FETCH
+        [ SWAP bucketizer.mean $now 30 m 0 ] BUCKETIZE 0 GET
+        'conso' STORE
+        $conso LABELS 'puissanceSouscrite' GET TODOUBLE 'puissanceSouscrite' STORE
+        $conso TICKLIST REVERSE 0 GET 'first' STORE
+        $conso LASTTICK 'last' STORE
+
+        NEWGTS 'puissanceSouscrite' RENAME 'psGTS' STORE
+        $psGTS $first NaN NaN NaN $puissanceSouscrite ADDVALUE
+        DROP
+        $psGTS $last NaN NaN NaN $puissanceSouscrite ADDVALUE
+        $conso
+      </warp-view-tile>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body" style="height: 400px">
+      <warp-view-tile url="{{w10URL}}/exec" responsive="true" unit="kW"
+                      show-legend="true" chart-title="Last 24 h evolution">
+        NOW ->TSELEMENTS [ 0 2 ] SUBLIST TSELEMENTS-> 'now' STORE
+        [ '{{rt}}' 'enedis.linky' { 'pdl' '{{pdl}}' } $now 1 d - ISO8601 $now ISO8601 ] FETCH
+        [ SWAP bucketizer.mean $now 30 m 0 ] BUCKETIZE 0 GET
+        0 INTEGRATE
+      </warp-view-tile>
+    </div>
+  </div>
+</div>
+
+<div class="card-deck">
+  <div class="card shadow-sm">
+    <div class="card-body" style="height: 400px">
+      <warp-view-tile url="{{w10URL}}/exec" responsive="true" unit="kW"
+                      show-legend="true" chart-title="Last 30 days consumption">
+        [ '{{rt}}' 'enedis.linky' { 'pdl' '{{pdl}}' } NOW 30 d ] FETCH
+        [ SWAP bucketizer.mean NOW 3 h 0 ] BUCKETIZE 0 GET
+        'conso' STORE
+        $conso LABELS 'puissanceSouscrite' GET TODOUBLE 'puissanceSouscrite' STORE
+        $conso TICKLIST REVERSE 0 GET 'first' STORE
+        $conso LASTTICK 'last' STORE
+
+        NEWGTS 'puissanceSouscrite' RENAME 'psGTS' STORE
+        $psGTS $first NaN NaN NaN $puissanceSouscrite ADDVALUE
+        DROP
+        $psGTS $last NaN NaN NaN $puissanceSouscrite ADDVALUE
+        $conso
+      </warp-view-tile>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body" style="height: 400px">
+      <warp-view-tile url="{{w10URL}}/exec" responsive="true" unit="kW"
+                      show-legend="true" chart-title="Last year consumption">
+        [ '{{rt}}' 'enedis.linky' { 'pdl' '{{pdl}}' } NOW 365 d ] FETCH
+        [ SWAP bucketizer.mean NOW 1 d 0 ] BUCKETIZE 0 GET
+        'conso' STORE
+        $conso LABELS 'puissanceSouscrite' GET TODOUBLE 'puissanceSouscrite' STORE
+        $conso TICKLIST REVERSE 0 GET 'first' STORE
+        $conso LASTTICK 'last' STORE
+
+        NEWGTS 'puissanceSouscrite' RENAME 'psGTS' STORE
+        $psGTS $first NaN NaN NaN $puissanceSouscrite ADDVALUE
+        DROP
+        $psGTS $last NaN NaN NaN $puissanceSouscrite ADDVALUE
+        $conso
+      </warp-view-tile>
+    </div>
+  </div>
+</div>
+
+<div class="card-deck">
+  <div class="card shadow-sm">
+    <div class="card-body" style="height: 400px">
+      <warp-view-tile url="{{w10URL}}/exec" responsive="true" unit="kW"
+                      show-legend="true" chart-title="Last 30 days evolution">
+        [ '{{rt}}' 'enedis.linky' { 'pdl' '{{pdl}}' } NOW 30 d ] FETCH
+        [ SWAP bucketizer.mean NOW 3 h 0 ] BUCKETIZE 0 GET
+        0 INTEGRATE
+      </warp-view-tile>
+    </div>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body" style="height: 400px">
+      <warp-view-tile url="{{w10URL}}/exec" responsive="true" unit="kW"
+                      show-legend="true" chart-title="Last year evolution">
+        [ '{{rt}}' 'enedis.linky' { 'pdl' '{{pdl}}' } NOW 365 d ] FETCH
+        [ SWAP bucketizer.mean NOW 1 d 0 ] BUCKETIZE 0 GET
+        0 INTEGRATE
+      </warp-view-tile>
+    </div>
+  </div>
+
+</div>

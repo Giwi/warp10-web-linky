@@ -1,0 +1,62 @@
+<h2>Load History</h2>
+<form>
+  <div class="form-group">
+    <label for="login">Enedis login</label>
+    <input type="text" class="form-control" id="login" placeholder="Enter login">
+  </div>
+  <div class="form-group">
+    <label for="password">Enedis password</label>
+    <input type="password" class="form-control" id="password" placeholder="Password">
+  </div>
+  <label for="datetimepicker1">Date</label>
+  <div class="input-group mb-2">
+    <div class="input-group-prepend">
+      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+    </div>
+    <input type="text" class="form-control" placeholder="dd/mm/yyyy" id='datetimepicker1'>
+  </div>
+
+  <button type="button" id="load" class="btn btn-primary">Submit</button>
+</form>
+<script>
+
+  $(document).ready(() => {
+    $.extend(true, $.fn.datetimepicker.defaults, {
+      icons: {
+        time: 'fa fa-clock',
+        date: 'fa fa-calendar',
+        up: 'fa fa-arrow-up',
+        down: 'fa fa-arrow-down',
+        previous: 'fa fa-chevron-left',
+        next: 'fa fa-chevron-right',
+        today: 'fa fa-calendar-check',
+        clear: 'fa fa-trash-alt',
+        close: 'fa fa-times-circle'
+      }
+    });
+
+    $('#datetimepicker1').datetimepicker({
+      format: 'DD/MM/YYYY',
+      maxDate: moment(),
+      //   defaultDate: moment(),
+    });
+
+    $('#load').click(() => {
+      $('#load').prop("disabled", true);
+      var post = $.ajax({
+          url: '/api/history',
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({
+            start: $('#datetimepicker1').data("DateTimePicker").viewDate().valueOf(),
+            login: $('#login').val(),
+            password: $('#password').val(),
+          })
+        }
+      );
+      post.always(function (data) {
+        $('#load').prop("disabled", false);
+      });
+    })
+  });
+</script>
