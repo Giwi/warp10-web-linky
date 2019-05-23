@@ -3,19 +3,22 @@
     <div class="card-body" style="height: 400px">
       <warp-view-tile url="{{w10URL}}/exec" responsive="true" unit="kW"
                       show-legend="true" chart-title="Last 24 hour consumption">
-        NOW ->TSELEMENTS [ 0 2 ] SUBLIST TSELEMENTS-> 'now' STORE
-        [ '{{rt}}' 'enedis.linky' { 'pdl' '{{pdl}}' } $now 1 d - ISO8601 $now ISO8601 ] FETCH
-        [ SWAP bucketizer.mean $now 30 m 0 ] BUCKETIZE 0 GET
-        'conso' STORE
-        $conso LABELS 'puissanceSouscrite' GET TODOUBLE 'puissanceSouscrite' STORE
-        $conso TICKLIST REVERSE 0 GET 'first' STORE
-        $conso LASTTICK 'last' STORE
+NOW ->TSELEMENTS [ 0 2 ] SUBLIST TSELEMENTS-> 'now' STORE
+[ '{{rt}}' 'enedis.linky' { 'pdl' '{{pdl}}' } $now 1 d - ISO8601 $now ISO8601 ] FETCH
+[ SWAP bucketizer.mean $now 30 m 0 ] BUCKETIZE
+'conso' STORE
+<% $conso SIZE 0 > %>
+<% $conso 0 GET '$conso' STORE
+$conso LABELS 'puissanceSouscrite' GET TODOUBLE 'puissanceSouscrite' STORE
+$conso TICKLIST REVERSE 0 GET 'first' STORE
+$conso LASTTICK 'last' STORE
 
-        NEWGTS 'puissanceSouscrite' RENAME 'psGTS' STORE
-        $psGTS $first NaN NaN NaN $puissanceSouscrite ADDVALUE
-        DROP
-        $psGTS $last NaN NaN NaN $puissanceSouscrite ADDVALUE
-        $conso
+NEWGTS 'puissanceSouscrite' RENAME 'psGTS' STORE
+$psGTS $first NaN NaN NaN $puissanceSouscrite ADDVALUE
+DROP
+$psGTS $last NaN NaN NaN $puissanceSouscrite ADDVALUE
+$conso
+%> IFT
       </warp-view-tile>
     </div>
   </div>
@@ -24,10 +27,13 @@
     <div class="card-body" style="height: 400px">
       <warp-view-tile url="{{w10URL}}/exec" responsive="true" unit="kW"
                       show-legend="true" chart-title="Last 24 h evolution">
-        NOW ->TSELEMENTS [ 0 2 ] SUBLIST TSELEMENTS-> 'now' STORE
-        [ '{{rt}}' 'enedis.linky' { 'pdl' '{{pdl}}' } $now 1 d - ISO8601 $now ISO8601 ] FETCH
-        [ SWAP bucketizer.mean $now 30 m 0 ] BUCKETIZE 0 GET
-        0 INTEGRATE
+NOW ->TSELEMENTS [ 0 2 ] SUBLIST TSELEMENTS-> 'now' STORE
+[ '{{rt}}' 'enedis.linky' { 'pdl' '{{pdl}}' } $now 1 d - ISO8601 $now ISO8601 ] FETCH
+[ SWAP bucketizer.mean $now 30 m 0 ] BUCKETIZE
+'conso' STORE
+<% $conso SIZE 0 > %>
+<% $conso 0 GET 0 INTEGRATE %>
+IFT
       </warp-view-tile>
     </div>
   </div>
