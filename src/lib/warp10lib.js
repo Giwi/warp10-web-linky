@@ -21,7 +21,7 @@ function Warp10(w10URL, wt, rt) {
      *
      * @param pdl
      * @param data
-     * @return {Promise<any>}
+     * @return {Promise<>}
      */
     this.update = function (pdl, data) {
         return new Promise((resolve, reject) => {

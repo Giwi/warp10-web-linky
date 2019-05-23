@@ -9,14 +9,14 @@ NOW ->TSELEMENTS [ 0 2 ] SUBLIST TSELEMENTS-> 'now' STORE
 'conso' STORE
 <% $conso SIZE 0 > %>
 <% $conso 0 GET 'conso' STORE
-$conso LABELS 'puissanceSouscrite' GET TODOUBLE 'puissanceSouscrite' STORE
+$conso LABELS 'subscribed' GET TODOUBLE 'subscribed' STORE
 $conso TICKLIST REVERSE 0 GET 'first' STORE
 $conso LASTTICK 'last' STORE
 
-NEWGTS 'puissanceSouscrite' RENAME 'psGTS' STORE
-$psGTS $first NaN NaN NaN $puissanceSouscrite ADDVALUE
+NEWGTS 'subscribed' RENAME 'psGTS' STORE
+$psGTS $first NaN NaN NaN $subscribed ADDVALUE
 DROP
-$psGTS $last NaN NaN NaN $puissanceSouscrite ADDVALUE
+$psGTS $last NaN NaN NaN $subscribed ADDVALUE
 $conso
 %> IFT
       </warp-view-tile>
@@ -47,14 +47,14 @@ IFT
         [ '{{rt}}' 'enedis.linky' { 'pdl' '{{pdl}}' } NOW 30 d ] FETCH
         [ SWAP bucketizer.mean NOW 3 h 0 ] BUCKETIZE 0 GET
         'conso' STORE
-        $conso LABELS 'puissanceSouscrite' GET TODOUBLE 'puissanceSouscrite' STORE
+        $conso LABELS 'subscribed' GET TODOUBLE 'subscribed' STORE
         $conso TICKLIST REVERSE 0 GET 'first' STORE
         $conso LASTTICK 'last' STORE
 
-        NEWGTS 'puissanceSouscrite' RENAME 'psGTS' STORE
-        $psGTS $first NaN NaN NaN $puissanceSouscrite ADDVALUE
+        NEWGTS 'subscribed' RENAME 'psGTS' STORE
+        $psGTS $first NaN NaN NaN $subscribed ADDVALUE
         DROP
-        $psGTS $last NaN NaN NaN $puissanceSouscrite ADDVALUE
+        $psGTS $last NaN NaN NaN $subscribed ADDVALUE
         $conso
       </warp-view-tile>
     </div>
@@ -67,14 +67,14 @@ IFT
         [ '{{rt}}' 'enedis.linky' { 'pdl' '{{pdl}}' } NOW 365 d ] FETCH
         [ SWAP bucketizer.mean NOW 1 d 0 ] BUCKETIZE 0 GET
         'conso' STORE
-        $conso LABELS 'puissanceSouscrite' GET TODOUBLE 'puissanceSouscrite' STORE
+        $conso LABELS 'subscribed' GET TODOUBLE 'subscribed' STORE
         $conso TICKLIST REVERSE 0 GET 'first' STORE
         $conso LASTTICK 'last' STORE
 
-        NEWGTS 'puissanceSouscrite' RENAME 'psGTS' STORE
-        $psGTS $first NaN NaN NaN $puissanceSouscrite ADDVALUE
+        NEWGTS 'subscribed' RENAME 'psGTS' STORE
+        $psGTS $first NaN NaN NaN $subscribed ADDVALUE
         DROP
-        $psGTS $last NaN NaN NaN $puissanceSouscrite ADDVALUE
+        $psGTS $last NaN NaN NaN $subscribed ADDVALUE
         $conso
       </warp-view-tile>
     </div>
