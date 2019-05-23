@@ -29,7 +29,7 @@ function Warp10(w10URL, wt, rt) {
             data.forEach(d => {
                 const ts = dayjs(d.date, 'YYYY-MM-DD HH:mm:ss').valueOf() * 1000;
                 if (d.value) {
-                    inputFormat += `${ts}// enedis.linky{unit=kW,puissanceSouscrite=${d.puissanceSouscrite},pdl=${pdl}} ${d.value}
+                    inputFormat += `${ts}// enedis.linky{unit=kW,subscribed=${d.puissanceSouscrite},pdl=${pdl}} ${d.value}
 `;
                 }
             });
