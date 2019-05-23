@@ -34,7 +34,7 @@ function Linky() {
      */
     this.updateHistory = function (startDate, step = 1) {
         const now = dayjs().subtract(1, 'day');
-        return this.getBetween2Dates(startDate, now.format('YYYY-MM-DD'))
+        return this.getBetween2Dates(startDate, now.format('YYYY-MM-DD'), step)
     };
 
     /**
