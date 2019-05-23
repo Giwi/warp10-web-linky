@@ -2,9 +2,9 @@
   <div class="card-body" style="height: 600px; width: 100%">
     <warp-view-tile url="{{w10URL}}/exec" responsive="true" unit="kW"
                     options='{"timeMode": "timestamp"}'
-                    show-legend="true" chart-title="Last 24 h Power monotonic">
+                    show-legend="true" chart-title="Last 30 d Load duration">
 NOW ->TSELEMENTS [ 0 2 ] SUBLIST TSELEMENTS-> 'now' STORE
-[ '{{rt}}' 'enedis.linky' { 'pdl' '{{pdl}}' } $now 1 d - ISO8601 $now ISO8601 ] FETCH
+[ '{{rt}}' 'enedis.linky' { 'pdl' '{{pdl}}' } $now 30 d - ISO8601 $now ISO8601 ] FETCH
 [ SWAP bucketizer.mean NOW 1 h 0 ] BUCKETIZE 'gts' STORE
 <% $gts SIZE 0 > %> <%
   $gts

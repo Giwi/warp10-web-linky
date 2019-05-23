@@ -8,7 +8,7 @@ instance.
 - WebSite
  - bulk data fetch and push from Enedis to Warp 10™
  - Consumption history (day / month / year)
- - Power monotonic
+ - Load duration curve
  - Month consumption spectrum
 - Daily cron to keep data up to date
 
