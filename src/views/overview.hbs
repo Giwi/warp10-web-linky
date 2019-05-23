@@ -8,7 +8,7 @@ NOW ->TSELEMENTS [ 0 2 ] SUBLIST TSELEMENTS-> 'now' STORE
 [ SWAP bucketizer.mean $now 30 m 0 ] BUCKETIZE
 'conso' STORE
 <% $conso SIZE 0 > %>
-<% $conso 0 GET '$conso' STORE
+<% $conso 0 GET 'conso' STORE
 $conso LABELS 'puissanceSouscrite' GET TODOUBLE 'puissanceSouscrite' STORE
 $conso TICKLIST REVERSE 0 GET 'first' STORE
 $conso LASTTICK 'last' STORE
