@@ -14,6 +14,7 @@ function WebServer() {
     this.app = express();
     this.jsonParser = bodyParser.json();
 
+    // noinspection JSUnusedGlobalSymbols
     this.app.engine('.hbs', exphbs({
         defaultLayout: 'main',
         extname: '.hbs',
@@ -85,12 +86,11 @@ function WebServer() {
             console.log(r + ' records uploaded');
             res.send('successfully registered');
         }).catch(e => {
-            res.send('successfully registered');
+            res.send(e);
         });
     });
 
-    this.app.use((err, request, response, next) => {
-        // log the error, for now just console.log
+    this.app.use((err, request, response) => {
         console.log(err);
         response.status(500).send('Something broke!')
     });
@@ -106,7 +106,7 @@ function WebServer() {
                     reject(err);
                 }
 
-                console.log(`server is listening on ${this.port}`)
+                console.log(`server is listening on http://127.0.0.1:${this.port}`);
                 resolve();
             });
         });
