@@ -1,6 +1,9 @@
 const dayjs = require('dayjs');
 const axios = require('axios');
 const https = require('https');
+const agent = new https.Agent({
+    rejectUnauthorized: false
+});
 /**
  *
  * @param w10URL Warp 10 endpoint
@@ -12,11 +15,8 @@ function Warp10(w10URL, wt, rt) {
     this.w10URL = w10URL;
     this.wt = wt;
     this.rt = rt;
-    const agent = new https.Agent({
-        rejectUnauthorized: false
-    });
     this.exec = function(ws) {
-        return axios.post(this.w10URL + '/exec', ws, { httpsAgent: agent });
+        return axios.post(this.w10URL + '/exec', ws);
     };
 
     /**
