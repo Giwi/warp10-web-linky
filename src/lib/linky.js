@@ -61,6 +61,7 @@ function Linky() {
                                 start: next.format('DD/MM/YYYY'),
                                 end: end.format('DD/MM/YYYY')
                             });
+                            
                             await this.w10.update(this.pdl, data);
                             sum += data.length;
                         } catch (e) {

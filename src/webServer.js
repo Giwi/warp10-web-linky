@@ -90,10 +90,12 @@ function WebServer() {
         });
     });
 
-    this.app.use((err, request, response) => {
-        console.log(err);
-        response.status(500).send('Something broke!')
-    });
+ /*   this.app.use((err, request, response) => {
+        console.log(err, response);
+        response
+        // .status(500)
+        .send('Something broke!');
+    });*/
     /**
      *
      * @return {Promise<>}

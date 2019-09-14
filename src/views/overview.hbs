@@ -1,7 +1,7 @@
 <div class="card-deck">
   <div class="card shadow-sm">
     <div class="card-body" style="height: 400px">
-      <warp-view-tile url="{{w10URL}}/exec" responsive="true" unit="kW"
+      <warp-view-tile url="{{w10URL}}/exec" responsive="true" unit="kW" debug
                       show-legend="true" chart-title="Last 24 hour consumption">
 NOW ->TSELEMENTS [ 0 2 ] SUBLIST TSELEMENTS-> 'now' STORE
 [ '{{rt}}' 'enedis.linky' { 'pdl' '{{pdl}}' } $now 1 d - ISO8601 $now ISO8601 ] FETCH

@@ -96,7 +96,6 @@ class LinkySession {
             p_p_col_pos: 1,
             p_p_col_count: 3
         });
-
         const url = 'https://espace-client-particuliers.enedis.fr/group/espace-particuliers/suivi-de-consommation?' + query;
 
         let resp;
@@ -157,7 +156,6 @@ class LinkySession {
         if (get(['etat', 'valeur'], input) === 'nonActive') {
             throw new Error('No available data for the selected period');
         }
-
         const values = get(['graphe', 'data'], input);
         if (!Array.isArray(values)) {
             throw new Error(`Unexpected data: ${JSON.stringify(input)}` + enedisNotice);
