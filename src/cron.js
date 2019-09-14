@@ -6,6 +6,7 @@ const conf = require('./conf');
 const ws = `[ '${conf.warp10.rt}' 'enedis.linky' { 'pdl' '${conf.enedis.pdl}' } NOW -1 ] FETCH TICKLIST FLATTEN 0 GET`;
 
 const warp10 = new Warp10(conf.warp10.w10URL, conf.warp10.wt, conf.warp10.rt);
+console.log(ws)
 warp10.exec(ws).then(result => {
     const lastTick = result.data[0] / 1000;
     console.log(dayjs(lastTick).format('YYYY-MM-DD'));
