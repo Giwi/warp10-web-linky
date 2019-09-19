@@ -2,8 +2,8 @@ const WebServer = require('./webServer');
 const conf = require('./conf');
 const linky = require('./lib/linky');
 
-// WebServer.start();
-
+WebServer.start();
+/*
 linky.config({
     warp10: {
         w10URL: conf.warp10.w10URL,
@@ -19,3 +19,4 @@ linky.config({
     .then(r => {
         console.log(r)
     });
+*/
