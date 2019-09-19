@@ -5,7 +5,7 @@
                       show-legend="true" chart-title="Last 24 hour consumption">
 NOW ->TSELEMENTS [ 0 2 ] SUBLIST TSELEMENTS-> 'now' STORE
 [ '{{rt}}' 'enedis.linky' { 'pdl' '{{pdl}}' } $now 1 d - ISO8601 $now ISO8601 ] FETCH
-[ SWAP bucketizer.mean $now 30 m 0 ] BUCKETIZE
+[ SWAP bucketizer.max $now 30 m 0 ] BUCKETIZE
 'conso' STORE
 <% $conso SIZE 0 > %>
 <% $conso 0 GET 'conso' STORE
@@ -29,7 +29,7 @@ $conso
                       show-legend="true" chart-title="Last 24 h evolution">
 NOW ->TSELEMENTS [ 0 2 ] SUBLIST TSELEMENTS-> 'now' STORE
 [ '{{rt}}' 'enedis.linky' { 'pdl' '{{pdl}}' } $now 1 d - ISO8601 $now ISO8601 ] FETCH
-[ SWAP bucketizer.mean $now 30 m 0 ] BUCKETIZE
+[ SWAP bucketizer.max $now 30 m 0 ] BUCKETIZE
 'conso' STORE
 <% $conso SIZE 0 > %>
 <% $conso 0 GET 0 INTEGRATE %>
@@ -45,7 +45,7 @@ IFT
       <warp-view-tile url="{{w10URL}}/exec" responsive="true" unit="kW"
                       show-legend="true" chart-title="Last 30 days consumption">
         [ '{{rt}}' 'enedis.linky' { 'pdl' '{{pdl}}' } NOW 30 d ] FETCH
-        [ SWAP bucketizer.mean NOW 3 h 0 ] BUCKETIZE 0 GET
+        [ SWAP bucketizer.max NOW 3 h 0 ] BUCKETIZE 0 GET
         'conso' STORE
         $conso LABELS 'subscribed' GET TODOUBLE 'subscribed' STORE
         $conso TICKLIST REVERSE 0 GET 'first' STORE
@@ -65,7 +65,7 @@ IFT
       <warp-view-tile url="{{w10URL}}/exec" responsive="true" unit="kW"
                       show-legend="true" chart-title="Last year consumption">
         [ '{{rt}}' 'enedis.linky' { 'pdl' '{{pdl}}' } NOW 365 d ] FETCH
-        [ SWAP bucketizer.mean NOW 1 d 0 ] BUCKETIZE 0 GET
+        [ SWAP bucketizer.max NOW 1 d 0 ] BUCKETIZE 0 GET
         'conso' STORE
         $conso LABELS 'subscribed' GET TODOUBLE 'subscribed' STORE
         $conso TICKLIST REVERSE 0 GET 'first' STORE
@@ -87,7 +87,7 @@ IFT
       <warp-view-tile url="{{w10URL}}/exec" responsive="true" unit="kW"
                       show-legend="true" chart-title="Last 30 days evolution">
         [ '{{rt}}' 'enedis.linky' { 'pdl' '{{pdl}}' } NOW 30 d ] FETCH
-        [ SWAP bucketizer.mean NOW 3 h 0 ] BUCKETIZE 0 GET
+        [ SWAP bucketizer.max NOW 3 h 0 ] BUCKETIZE 0 GET
         0 INTEGRATE
       </warp-view-tile>
     </div>
@@ -98,7 +98,7 @@ IFT
       <warp-view-tile url="{{w10URL}}/exec" responsive="true" unit="kW"
                       show-legend="true" chart-title="Last year evolution">
         [ '{{rt}}' 'enedis.linky' { 'pdl' '{{pdl}}' } NOW 365 d ] FETCH
-        [ SWAP bucketizer.mean NOW 1 d 0 ] BUCKETIZE 0 GET
+        [ SWAP bucketizer.max NOW 1 d 0 ] BUCKETIZE 0 GET
         0 INTEGRATE
       </warp-view-tile>
     </div>
