@@ -1,16 +1,12 @@
 const qs = require('querystring');
 const axios = require('axios');
 const dayjs = require('dayjs');
-const axiosCookieJarSupport = require('axios-cookiejar-support').default;
-const tough = require('tough-cookie');
 const enedisNotice = ' - Check the Enedis website if the error persists';
 const get = (p, o) => p.reduce((xs, x) => (xs && xs[x]) ? xs[x] : null, o);
 const parseDate = dt => dayjs(`${dt.substr(6, 4)}-${dt.substr(3, 2)}-${dt.substr(0, 2)}`);
-axiosCookieJarSupport(axios);
 
 
 async function login(email, password) {
-    const cookieJar = new tough.CookieJar();
  
     const body = JSON.stringify({
         template: "",
@@ -47,8 +43,6 @@ async function login(email, password) {
             "Referer": "https://espace-client-connexion.enedis.fr/auth/XUI/"
             }
         });
-      //  console.log(resp.headers);
-     //   console.log(cookieJar.getCookiesSync())
         const cookies = resp.headers['set-cookie']
         .filter(el => el.indexOf('Domain=.enedis.fr') > -1)
         .filter(el => el.indexOf('Expires=Thu, 01-Jan-1970 00:00:10 GMT') === -1);
