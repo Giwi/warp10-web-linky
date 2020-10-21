@@ -52,9 +52,9 @@ function Linky() {
             const spinner = ora(`Loading data from: ${startDate} to ${endDate}`).start();
             linky.login(this.login, this.passwd)
                 .then(async session => {
-                    while (end.isAfter(start)) {
+                    while (end.isAfter(start) && !!session) {
                         const next = end.subtract(step, 'day');
-                        spinner.text = `${end.diff(start, 'day')} days left, ${sum} records uploaded  from: ${next.format('DD/MM/YYYY')} to ${end.format('DD/MM/YYYY')}`;
+                      spinner.text = `${end.diff(start, 'day')} days left, ${sum} records uploaded  from: ${next.format('DD/MM/YYYY')} to ${end.format('DD/MM/YYYY')}`;
 
                         try {
                             const data = await session.getHourlyData({

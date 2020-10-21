@@ -1,26 +1,69 @@
 const qs = require('querystring');
 const axios = require('axios');
 const dayjs = require('dayjs');
-
+const axiosCookieJarSupport = require('axios-cookiejar-support').default;
+const tough = require('tough-cookie');
 const enedisNotice = ' - Check the Enedis website if the error persists';
 const get = (p, o) => p.reduce((xs, x) => (xs && xs[x]) ? xs[x] : null, o);
 const parseDate = dt => dayjs(`${dt.substr(6, 4)}-${dt.substr(3, 2)}-${dt.substr(0, 2)}`);
+axiosCookieJarSupport(axios);
+
 
 async function login(email, password) {
-    const body = qs.stringify({
-        IDToken1: email,
-        IDToken2: password,
-        SunQueryParamsString: 'cmVhbG09cGFydGljdWxpZXJz', // Base64 of 'realm=particuliers'
-        encoded: true,
-        gx_charset: 'UTF-8'
+    const cookieJar = new tough.CookieJar();
+ 
+    const body = JSON.stringify({
+        template: "",
+        stage: "LDAP1",
+        header: "Ce serveur utilise l'authentification LDAP.", 
+        callbacks: [
+            { type: "NameCallback", output: [{ name: "prompt", value: "Nom d'utilisateur :" }], input: [{ name: "IDToken1", value: email }] },
+            { type: "PasswordCallback", "output": [{ name: "prompt", value: "Mot de passe :" }], input: [{ name: "IDToken2", value: password }]
+        }]
     });
-    const uri = 'https://espace-client-connexion.enedis.fr/auth/UI/Login';
-
+    const uri = 'https://espace-client-connexion.enedis.fr/auth/json/authenticate?realm=particuliers&realm=particuliers';
+  
     try {
-        await axios.post(uri, body, {
-            maxRedirects: 0
+       
+        const resp = await axios.post(uri, body, {
+            withCredentials: true,
+            followRedirect: true,
+            headers: {
+            "Connection": "keep-alive",
+            "Accept-API-Version": "protocol=1.0,resource=2.0",
+            "X-Password": "anonymous",
+            "Accept-Language": "fr-FR",
+            "X-Username": "anonymous",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36 OPR/69.0.3686.95",
+            "Content-Type": "application/json",
+            "Accept": "application/json, text/javascript, */*; q=0.01",
+            "Cache-Control": "no-cache",
+            "X-Requested-With": "XMLHttpRequest",
+            "X-NoSession": "true",
+            "Origin": "https://espace-client-connexion.enedis.fr",
+            "Sec-Fetch-Site": "same-origin",
+            "Sec-Fetch-Mode": "cors",
+            "Sec-Fetch-Dest": "empty",
+            "Referer": "https://espace-client-connexion.enedis.fr/auth/XUI/"
+            }
         });
+      //  console.log(resp.headers);
+     //   console.log(cookieJar.getCookiesSync())
+        const cookies = resp.headers['set-cookie']
+        .filter(el => el.indexOf('Domain=.enedis.fr') > -1)
+        .filter(el => el.indexOf('Expires=Thu, 01-Jan-1970 00:00:10 GMT') === -1);
+
+    if (!cookies || cookies.length === 0) {
+        throw new Error('Unexpected login response (4)' + enedisNotice);
+    }
+    const authCookies = cookies.filter(h => h.indexOf('iPlanetDirectoryPro=') === 0);
+    if (authCookies.length === 0) {
+        throw new Error('The email or the password is incorrect');
+    }
+    console.log('cookies', authCookies)
+    return new LinkySession(cookies);
     } catch (err) {
+        console.log(err)
         if (!err.response || err.response.status !== 302) {
             throw new Error('Unexpected login response (2): ' + err.message + enedisNotice);
         }
@@ -42,10 +85,11 @@ async function login(email, password) {
         if (authCookies.length === 0) {
             throw new Error('The email or the password is incorrect');
         }
+        console.log('cookies', cookies)
         return new LinkySession(cookies);
     }
 
-    throw new Error('Unexpected login response (1)' + enedisNotice);
+   // throw new Error('Unexpected login response (1)' + enedisNotice);
 }
 
 class LinkySession {
@@ -103,7 +147,7 @@ class LinkySession {
             // Call once
             resp = await axios.post(url, body, {
                 maxRedirects: 0,
-                headers: {Cookie: this.getCookie(), 'content-type': 'application/x-www-form-urlencoded'},
+                headers: { Cookie: this.getCookie(), 'content-type': 'application/x-www-form-urlencoded' },
                 withCredentials: true
             });
         } catch (err) {
@@ -183,4 +227,4 @@ class LinkySession {
     }
 }
 
-module.exports = {login};
+module.exports = { login };

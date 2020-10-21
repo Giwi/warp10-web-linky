@@ -2,8 +2,8 @@ const WebServer = require('./webServer');
 const conf = require('./conf');
 const linky = require('./lib/linky');
 
-WebServer.start();
-/*
+// WebServer.start();
+
 linky.config({
     warp10: {
         w10URL: conf.warp10.w10URL,
@@ -15,8 +15,7 @@ linky.config({
         passwd: conf.enedis.password,
         pdl: conf.enedis.pdl
     },
-}).updateHistory('2019-08-25', 1)
+}).updateHistory('2019-11-25', 1)
     .then(r => {
         console.log(r)
     });
-*/
